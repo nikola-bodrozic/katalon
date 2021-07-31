@@ -1,0 +1,12 @@
+# Katalon Test in Docker
+
+
+## Obtain key
+
+API key is in your TestOps - <https://analytics.katalon.com/user/apikey>
+
+## Run Docker Container
+
+```
+docker run -t --rm -v "$(pwd)":/tmp/project katalonstudio/katalon katalonc.sh -projectPath=/tmp/project -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/login" -apikey="YOUR KEY"
+```
