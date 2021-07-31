@@ -21,7 +21,7 @@ pipeline {
       steps {
         git 'https://github.com/nikola-bodrozic/katalon.git'
         sh 'ls -lA'
-        sh 'katalonc.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/login" -apikey=${KATALON_API_KEY}'
+        sh 'katalonc.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/login" -projectPath=. -apikey=${KATALON_API_KEY}'
       }
     }
   }
