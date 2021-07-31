@@ -12,10 +12,16 @@ pipeline {
   
   stages {
     stage('Test') {
+      agent {
+        docker {
+           image 'katalonstudio/katalon'
+            args "-u root"
+        }
+      }
       steps {
         git 'https://github.com/nikola-bodrozic/katalon.git'
         sh 'ls -lA'
-        sh 'docker run -t --rm -v "$(pwd)":/tmp/project katalonstudio/katalon katalonc.sh -projectPath=/tmp/project -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/login" -apikey=${KATALON_API_KEY}'
+        sh 'katalonc.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/login" -apikey=${KATALON_API_KEY}'
       }
     }
   }
@@ -30,4 +36,27 @@ pipeline {
       echo 'send warning about broken build'
     }
   }
+}
+
+
+pipeline {
+    agent {
+        docker {
+            image 'katalonstudio/katalon'
+            args "-u root"
+        }
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'katalonc.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/TS_RegressionTest"'
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'report/**/*.*', fingerprint: true
+            junit 'report/**/JUnit_Report.xml'
+        }
+    }
 }
