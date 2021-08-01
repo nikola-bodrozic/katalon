@@ -1,10 +1,4 @@
 pipeline {
-    agent {
-        docker {
-            image 'katalonstudio/katalon'
-            args "-u root"
-        }
-    }
 
     environment {
         KATALON_API_KEY = credentials('4bdfb4e8-80ff-4ade-ac99-564697fb4b1e')
@@ -25,6 +19,7 @@ pipeline {
             }
         }
     }
+
     post {
         success {
             echo 'test passed'
@@ -36,4 +31,5 @@ pipeline {
             echo 'send warning about broken build'
         }
     }
+    
 }
